@@ -11,6 +11,10 @@ contract Upload {
     mapping(address => Access[]) accessList; // to store the sddresses of the users with access given
     mapping(address => mapping(address => bool)) previousData;
 
+    // address public deployedContractAddress;
+
+    // event ContractDeployed(address indexed contractAddress);
+
     function add(address _user, string memory url) external {
         value[_user].push(url);
     }
@@ -74,4 +78,9 @@ contract Upload {
 
         return result;
     }
+
+    // function emitContractDeployedEvent(address _contractAddress) public {
+    //     deployedContractAddress = _contractAddress;
+    //     emit ContractDeployed(_contractAddress);
+    // }
 }
