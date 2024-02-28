@@ -12,11 +12,7 @@ import type {
   Signer,
   utils,
 } from "ethers";
-import type {
-  FunctionFragment,
-  Result,
-  EventFragment,
-} from "@ethersproject/abi";
+import type { FunctionFragment, Result } from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   TypedEventFilter,
@@ -42,10 +38,8 @@ export interface UploadInterface extends utils.Interface {
   functions: {
     "add(address,string)": FunctionFragment;
     "allow(address)": FunctionFragment;
-    "deployedContractAddress()": FunctionFragment;
     "disAllow(address)": FunctionFragment;
     "display(address)": FunctionFragment;
-    "emitContractDeployedEvent(address)": FunctionFragment;
     "shareAccess()": FunctionFragment;
   };
 
@@ -53,10 +47,8 @@ export interface UploadInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "add"
       | "allow"
-      | "deployedContractAddress"
       | "disAllow"
       | "display"
-      | "emitContractDeployedEvent"
       | "shareAccess"
   ): FunctionFragment;
 
@@ -69,19 +61,11 @@ export interface UploadInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "deployedContractAddress",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "disAllow",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "display",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "emitContractDeployedEvent",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
@@ -91,38 +75,15 @@ export interface UploadInterface extends utils.Interface {
 
   decodeFunctionResult(functionFragment: "add", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allow", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "deployedContractAddress",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "disAllow", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "display", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "emitContractDeployedEvent",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "shareAccess",
     data: BytesLike
   ): Result;
 
-  events: {
-    "ContractDeployed(address)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "ContractDeployed"): EventFragment;
+  events: {};
 }
-
-export interface ContractDeployedEventObject {
-  contractAddress: string;
-}
-export type ContractDeployedEvent = TypedEvent<
-  [string],
-  ContractDeployedEventObject
->;
-
-export type ContractDeployedEventFilter =
-  TypedEventFilter<ContractDeployedEvent>;
 
 export interface Upload extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -162,8 +123,6 @@ export interface Upload extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    deployedContractAddress(overrides?: CallOverrides): Promise<[string]>;
-
     disAllow(
       user: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -173,11 +132,6 @@ export interface Upload extends BaseContract {
       _user: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[string[]]>;
-
-    emitContractDeployedEvent(
-      _contractAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
 
     shareAccess(
       overrides?: CallOverrides
@@ -195,8 +149,6 @@ export interface Upload extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  deployedContractAddress(overrides?: CallOverrides): Promise<string>;
-
   disAllow(
     user: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -206,11 +158,6 @@ export interface Upload extends BaseContract {
     _user: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<string[]>;
-
-  emitContractDeployedEvent(
-    _contractAddress: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   shareAccess(overrides?: CallOverrides): Promise<Upload.AccessStructOutput[]>;
 
@@ -226,8 +173,6 @@ export interface Upload extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    deployedContractAddress(overrides?: CallOverrides): Promise<string>;
-
     disAllow(
       user: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -238,24 +183,12 @@ export interface Upload extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string[]>;
 
-    emitContractDeployedEvent(
-      _contractAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     shareAccess(
       overrides?: CallOverrides
     ): Promise<Upload.AccessStructOutput[]>;
   };
 
-  filters: {
-    "ContractDeployed(address)"(
-      contractAddress?: PromiseOrValue<string> | null
-    ): ContractDeployedEventFilter;
-    ContractDeployed(
-      contractAddress?: PromiseOrValue<string> | null
-    ): ContractDeployedEventFilter;
-  };
+  filters: {};
 
   estimateGas: {
     add(
@@ -269,8 +202,6 @@ export interface Upload extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    deployedContractAddress(overrides?: CallOverrides): Promise<BigNumber>;
-
     disAllow(
       user: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -279,11 +210,6 @@ export interface Upload extends BaseContract {
     display(
       _user: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    emitContractDeployedEvent(
-      _contractAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     shareAccess(overrides?: CallOverrides): Promise<BigNumber>;
@@ -301,10 +227,6 @@ export interface Upload extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    deployedContractAddress(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     disAllow(
       user: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -313,11 +235,6 @@ export interface Upload extends BaseContract {
     display(
       _user: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    emitContractDeployedEvent(
-      _contractAddress: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     shareAccess(overrides?: CallOverrides): Promise<PopulatedTransaction>;
